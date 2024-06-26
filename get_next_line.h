@@ -8,7 +8,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 # ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 50
 # endif
 
 
