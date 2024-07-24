@@ -1,7 +1,4 @@
-#include <stdio.h> 
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
+
 #include "get_next_line.h"
 
 size_t	ft_strlen(const char *s)
@@ -14,6 +11,47 @@ size_t	ft_strlen(const char *s)
 		i++;
 	}
 	return (i);
+}
+char	*ft_strchr(const char *s, int c)
+{
+	char	*ptr;
+
+	if (!s)
+		return (0);	
+	ptr = (char *)s;
+	while (*ptr != '\0')
+	{
+		if (*ptr == (char)c)
+			return (ptr);
+		ptr++;
+	}
+	if (*ptr == (char)c)
+		return (ptr);
+	return (0);
+}
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*new;
+	size_t	i;
+	size_t	len1;
+	size_t	len2;
+
+	i = 0;
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	len1 = strlen(s1);
+	len2 = strlen(s2);
+	new = calloc ((len1 + len2 + 1), sizeof(char));
+	if (new == NULL)
+		return (NULL);
+	while (i < (len1 + len2))
+	{
+		while (i < len1)
+			new[i++] = *s1++;
+		new[i++] = *s2++;
+	}
+	new[i] = '\0'; 
+	return (new);
 }
 char	*ft_strdup(const char *s1)
 {
@@ -56,33 +94,106 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 char *get_next_line(int fd)
 {
-	static char *position; // puedes hacer un static char *store -> guardará todas las lineas
-	int i;
-	int nl;
+	ssize_t bytes_read;
+	char *buf;
+	char *aux;
 	char *newstr;
-	int fd;
-	char buf;
-	char *line = malloc(BUFFER_SIZE);
+	static char *save;
+	int i;
 
+	i = 0;
+	if (!save)
+		save = ft_strdup("");
 
-		read(fd, buf, BUFFER_SIZE);
-	while (position[i] != '\n' && i > BUFFER_SIZE)
-		nl = 0;
-		while(position[i] != '\n')
-			nl++;
-		read(fd, line, nl); //piensa en lo de caracter por caracter
-		if(BUFFER_SIZE > nl)
-		ft_substr(position, i, (BUFFER_SIZE - i));
-		return(newstr);
-		i =+ nl;
+	buf = calloc(sizeof(char), (BUFFER_SIZE + 1));
+    if (!buf)
+		return NULL;
+	while(!ft_strchr(save, '\n'))
+	{
+		bytes_read = read(fd, buf, BUFFER_SIZE);
+		if (bytes_read < 0)
+		{
+			free(buf);
+			return NULL;
+		}
+		buf[bytes_read] = '\0';
+		aux = save;
+		aux = ft_strjoin(aux, buf);
+		printf("\nAUX: %s", aux);
+		printf("\nSAVE: %s", save);
+		save = aux;
+		printf("\nSAVE2: %s", save);
+	}
+	while(save[i] != '\n')
+		i++;
+	printf("\nI: %i\n", i);
+	newstr = ft_substr(save, 0, i);
+	printf("\nNEWSTR: %s", newstr);
+/* 	if(ft_strchr(save, '\0'))
+	{
+		return(save);
+		save = NULL;
+	}
+	if(save == NULL)
+		return(NULL); */
+	return(newstr);
+
 }
 
-int main(void)
+/* int main()
 {
-		fd = open("/home/sjuan-ma/Desktop/get_next_line/she_dont_give_a_fo", O_RDONLY);
+	int fd;
+	int i = -1;
+	char *line;
+	char *line2;
+	char *line3;
+
+	fd = open("/home/sjuan-ma/Desktop/get_next_line/she_dont_give_a_fo", O_RDONLY);
 	if(fd == -1)
 	{
 		printf("Error al abrir el archivo");
+		return 1;
 	}
+	while (1)
+	{
+		line = get_next_line(fd);
+		printf("%s\n", line);
+		free(line);
+		line2 = get_next_line(fd);
+		printf("%s\n", line2);
+		line3 = get_next_line(fd);
+		printf("%s", line3);
+	}
+	free(line3);
+	free(line2);
+	close(fd);
 	return 0;
+} */
+
+int main(void)
+{
+    int fd;
+    unsigned long long i;
+    i = 0;
+    fd = open("/home/sjuan-ma/Desktop/get_next_line/she_dont_give_a_fo", O_RDONLY);
+    if (fd < 0)
+    {
+        perror("Error al abrir el archivo");
+        return 1;
+    }
+    char *line;
+    while ((line = get_next_line(fd)) != NULL)
+    {
+        if (line[0] == '\0') {
+            // La línea es vacía, imprimir un salto de línea manualmente
+            printf("\n");
+        } else {
+            printf("%s\n", line);
+        }
+    i++;
+        free(line);
+    }
+    printf("\nTotal lines: %lld\n", i);
+    close(fd);
+    return 0;
 }
