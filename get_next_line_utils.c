@@ -2,6 +2,25 @@
 //animo ;) ! i will stay here
 #include "get_next_line.h"
 
+void	*ft_calloc(size_t count, size_t size)
+{
+	size_t	total_size;
+	char	*pointer;
+
+	total_size = count * size;
+	if (size != 0 && total_size >= SIZE_MAX)
+		return (NULL);
+	pointer = malloc(total_size);
+	if (pointer == NULL)
+		return (NULL);
+	while (total_size > 0)
+	{
+		pointer[total_size - 1] = 0;
+		total_size--;
+	}
+	return (pointer);
+}
+
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;
