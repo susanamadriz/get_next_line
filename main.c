@@ -4,22 +4,28 @@ int	main(int argc, char **argv)
 {
 	int		fd;
 	char	*str;
-	int 	line;
-	line = 1;
+//	int 	line;
+	//int		i = 0;
+//	line = 1;
 	fd = open(argv[1], O_RDONLY);
-	str = get_next_line(fd);
+	printf("%i\n", argc);
 
-	printf("%s", str);
-	free (str);
-	// while (line)
-	// {
-	// 	printf("%s\n", str);
-	// 	free(str);
-	// 	str = get_next_line(fd);
-	// 	if (!str)
-	// 		break;
-	// }
+	str = get_next_line(fd);
+	while (str)
+//	while (i < 16)
+	{
+		printf("%s\n", str);
+		free(str);
+
+		str = get_next_line(fd);
+	}
+//	while (str)
+//	while (i < 16)
+//	printf("GNL 2: %s\n", str);
+//	free(str);
+	
+	//	i++;
 	// system("leaks -q a.out");
-	// close(fd);
+	close(fd);
 	return (0);
 }

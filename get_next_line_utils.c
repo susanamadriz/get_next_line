@@ -42,10 +42,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (s == NULL)
 		return (NULL);
 	if (start >= ft_strlen(s))
-		return (calloc(1,1));
+		return (ft_calloc(1,1));
 	if (len > ft_strlen(s) - start)
 		len = ft_strlen(s) - start;
-	new = calloc(sizeof(char), (len + 1));
+	new = ft_calloc(sizeof(char), (len + 1));
 	if (new == NULL)
 		return (NULL);
 	while (i < len)
@@ -69,7 +69,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
-	new = calloc ((len1 + len2 + 1), sizeof(char));
+	new = ft_calloc ((len1 + len2 + 1), sizeof(char));
 	if (new == NULL)
 		return (NULL);
 	while (i < (len1 + len2))
@@ -99,17 +99,16 @@ char	*ft_strchr(const char *s, int c)
 		return (ptr);
 	return (0);
 }
-// char	*ft_strdup(const char *s1)
-// {
-// 	int		i;
-// 	char	*new;
-
-// 	i = 0;
-// 	new = calloc(ft_strlen(s1), sizeof(char) + 1);
-// 	if (new == NULL)
-// 		return (NULL);
-// 	while (*s1)
-// 		new[i++] = *s1++;
-// 	new[i] = '\0';
-// 	return (new);
-// }
+char	*ft_strdup(const char *s1)
+{
+	int		i;
+	char	*new;
+	i = 0;
+	new = calloc(ft_strlen(s1), sizeof(char) + 1);
+	if (new == NULL)
+		return (NULL);
+	while (*s1)
+		new[i++] = *s1++;
+	new[i] = '\0';
+	return (new);
+}
