@@ -6,7 +6,7 @@
 /*   By: sjuan-ma <sjuan-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:02:33 by sjuan-ma          #+#    #+#             */
-/*   Updated: 2024/08/02 20:44:55 by sjuan-ma         ###   ########.fr       */
+/*   Updated: 2024/08/04 16:59:33 by sjuan-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,40 +19,11 @@ char *more_info(char *save, int fd)
 	char *aux;
 	
 	bytes_read = 1;
-//	if (!save)
-//		save = ft_calloc(sizeof(char), (1));
-//	if (!save)
-//		return (NULL);
-	//printf("SAVE1:%s\n", save);
-	//printf("EMPIEZA EL WHILE\n");
 	while (bytes_read > 0 && (!ft_strchr(save, '\n')))
-	{
-		buf = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
-		if (!buf)
-			return NULL;
-//		printf("ENTRA AL WHILE \n");
-		bytes_read = read(fd, buf, BUFFER_SIZE);
-//		printf("%i\n", i);
-		if (bytes_read < 0)
-		{
-			free(buf);
-			return NULL;
-		}
-		buf[bytes_read] = 0;
-	//	printf("BUF: %s\n", buf);
-//		printf("SAVE2:%s\n", save);	
-		if (*buf == '\0')
-		{
-			printf("HOLA ULTIMA LINEA");
-			free(buf);
-			return (save);
-		}
-	//	printf("SAVE: %s y AUX: %s\n", save, aux);
-		aux = save;
-		save = ft_strjoin(aux, buf);
-
-		free(buf);					//Tienes que liberar el original
+	
+				//Tienes que liberar el original
 	}
+	//printf("Function 1 %s\n", save);
 	return (save);
 }
 
@@ -61,9 +32,13 @@ char *cut_line(char *raw)
 	char *result;
 	
 	// printf("AQUI %s\n", raw);
+	
+	//printf("Raw PRE  CUT: %s\n", raw);
 	result = NULL;
 	if (raw)
 		result = ft_substr(raw, 0, (ft_strlen(raw) - ft_strlen(ft_strchr(raw,  '\n'))));
+	//printf("PRE  CUT: %s\n",result);
+	//printf("Raw POST CUT: %s\n", raw);
 //	printf("AQUI %s\n", raw);
 	return (result);
 }
@@ -71,10 +46,15 @@ char *cut_line(char *raw)
 char *update_save(char *raw)
 {
 	char *save;
-//	printf("SAVE: %s\n", save);
-	save = ft_strchr(raw, '\n') + 1; 
-	if ((unsigned long)save == (unsigned long)1)
-		return (NULL);
+														//	printf("SAVE: %s\n", save);
+														//printf("Raw %s\n", raw);
+	save = ft_strchr(raw, '\n');
+														//printf("%p\n", save);
+	if (save)
+		save = ft_substr(save, 1, ft_strlen(save));
+														//printf("Save Post: %s\n", save);
+	//printf("POST CUT: %s\n",save);
+	free(raw);
 	return (save);
 }
 
@@ -82,11 +62,11 @@ char *get_next_line(int fd)
 {
 	char *newstr;
 	char *raw;
-	static char *save;
+	static char *save = NULL;
 	
  
 	//Paso 1
-	
+
 	raw = more_info(save, fd); 			//
   	if (!raw)
 		return NULL;

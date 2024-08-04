@@ -10,7 +10,8 @@ void	*ft_calloc(size_t count, size_t size)
 	total_size = count * size;
 	if (size != 0 && total_size >= SIZE_MAX)
 		return (NULL);
-	pointer = malloc(total_size);
+	if (total_size > 0)
+		pointer = malloc(total_size);
 	if (pointer == NULL)
 		return (NULL);
 	while (total_size > 0)
@@ -72,13 +73,14 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	new = ft_calloc ((len1 + len2 + 1), sizeof(char));
 	if (new == NULL)
 		return (NULL);
+	if (!s1)
+		return(ft_strdup(s2));
 	while (i < (len1 + len2))
 	{
 		while (i < len1)
 			new[i++] = *s1++;
 		new[i++] = *s2++;
 	}
-	//new[i] = '\0'; 
 	return (new);
 }
 
@@ -97,16 +99,19 @@ char	*ft_strchr(const char *s, int c)
 	}
 	if (*ptr == (char)c)
 		return (ptr);
-	return (0);
+	return (NULL);
 }
 char	*ft_strdup(const char *s1)
 {
 	int		i;
 	char	*new;
 	i = 0;
-	new = calloc(ft_strlen(s1), sizeof(char) + 1);
+	if (!s1)
+		return (NULL);
+	new = ft_calloc(ft_strlen(s1), sizeof(char) + 1);
 	if (new == NULL)
 		return (NULL);
+	else { printf("\n\n\n |StrDup: %p|\n\n\n", new); }
 	while (*s1)
 		new[i++] = *s1++;
 	new[i] = '\0';
