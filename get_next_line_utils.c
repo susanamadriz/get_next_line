@@ -4,22 +4,21 @@
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	size_t	total_size;
-	char	*pointer;
+    size_t	total_size;
+    char	*pointer;
 
-	total_size = count * size;
-	if (size != 0 && total_size >= SIZE_MAX)
-		return (NULL);
-	if (total_size > 0)
-		pointer = malloc(total_size);
-	if (pointer == NULL)
-		return (NULL);
-	while (total_size > 0)
-	{
-		pointer[total_size - 1] = 0;
-		total_size--;
-	}
-	return (pointer);
+    total_size = count * size;
+    if (size != 0 && total_size >= SIZE_MAX)
+        return (NULL);
+    pointer = malloc(total_size);
+    if (pointer == NULL)
+        return (NULL);
+    while (total_size > 0)
+    {
+        pointer[total_size - 1] = 0;
+        total_size--;
+    }
+    return (pointer);
 }
 
 size_t	ft_strlen(const char *s)
@@ -58,23 +57,23 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	new[i] = '\0';
 	return (new);
 }
-char	*ft_strjoin(char const *s1, char const *s2)
+char *ft_strjoin(char const *s1, char const *s2)
 {
-	char	*new;
+    char *new;
+    size_t len1;
+    size_t len2;
 	size_t	i;
-	size_t	len1;
-	size_t	len2;
 
 	i = 0;
-	if (s1 == NULL && s2 == NULL)
-		return (NULL);
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	new = ft_calloc ((len1 + len2 + 1), sizeof(char));
-	if (new == NULL)
-		return (NULL);
-	if (!s1)
-		return(ft_strdup(s2));
+    if (s1 == NULL && s2 == NULL)
+        return (NULL);
+    if (s1 == NULL)
+        return (ft_strdup(s2));
+    if (s2 == NULL)
+        return (ft_strdup(s1));
+    len1 = ft_strlen(s1);
+    len2 = ft_strlen(s2);
+    new = (char *)ft_calloc((len1 + len2 + 1), sizeof(char));
 	while (i < (len1 + len2))
 	{
 		while (i < len1)
@@ -108,10 +107,9 @@ char	*ft_strdup(const char *s1)
 	i = 0;
 	if (!s1)
 		return (NULL);
-	new = ft_calloc(ft_strlen(s1), sizeof(char) + 1);
+	new = ft_calloc(ft_strlen(s1) + 1, sizeof(char));
 	if (new == NULL)
 		return (NULL);
-	else { printf("\n\n\n |StrDup: %p|\n\n\n", new); }
 	while (*s1)
 		new[i++] = *s1++;
 	new[i] = '\0';
