@@ -1,5 +1,3 @@
-//funciones que puedes usar son (ft_strjoin) (ft_substr) (ft_strlen) (ft_strchr) (ft_strdup)
-//animo ;) ! i will stay here
 #include "get_next_line.h"
 
 void	*ft_calloc(size_t count, size_t size)
