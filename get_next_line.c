@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:02:33 by sjuan-ma          #+#    #+#             */
-/*   Updated: 2024/08/10 20:43:49 by codespace        ###   ########.fr       */
+/*   Updated: 2024/08/11 18:28:40 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,13 @@ char	*more_info(char *save, int fd)
 	{
 		buf = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 		if (!buf)
-			return (free (raw), (NULL));
+			return (free (raw), NULL);
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read < 0)
-			return (free(buf), free(raw), (NULL));
+		{
+			return (free(buf), free(raw), NULL);
+		}
+
 		aux = raw;
 		raw = ft_strjoin(aux, buf);
 		free(aux);
@@ -86,23 +89,48 @@ char	*get_next_line(int fd)
 	char		*newstr;
 	char		*raw;
 	static char	*save = NULL;
-
+	
 	raw = more_info(save, fd);
-	free (save);
 	if (!raw)
 		return (NULL);
+	if (raw)
+		free (save);
 	if (raw[0] == 0)
-	{
-		free(raw);
-		return (NULL);
-	}
+		return (free(raw), NULL);
 	newstr = cut_line(raw);
 	if (!newstr)
 	{
 		free (raw);
 		return (NULL);
 	}
-	save = update_save(raw);
+	if (raw)
+		save = update_save(raw);
 	free (raw);
 	return (newstr);
 }
+// int main(int argc, char **argv)
+// {
+//     int fd;
+//     char *line;
+//     int i = 0;
+
+//     if (argc != 2)
+//     {
+//         printf("Usage: %s <filename>\n", argv[0]);
+//         return (1);
+//     }
+//     fd = open(argv[1], O_RDONLY);
+//     if (fd == -1)
+//     {
+//         perror("Error opening file");
+//         return (1);
+//     }
+//     while ((line = get_next_line(fd)) != NULL)
+//     {
+//         printf("%s\n", line);
+//         free(line);
+//         i++;
+//     }
+//     close(fd);
+//     return (0);
+// }
