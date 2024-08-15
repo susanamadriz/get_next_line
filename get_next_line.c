@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:02:33 by sjuan-ma          #+#    #+#             */
-/*   Updated: 2024/08/11 18:28:40 by codespace        ###   ########.fr       */
+/*   Updated: 2024/08/15 16:14:44 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ char	*more_info(char *save, int fd)
 			return (free (raw), NULL);
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read < 0)
-		{
 			return (free(buf), free(raw), NULL);
-		}
-
 		aux = raw;
 		raw = ft_strjoin(aux, buf);
 		free(aux);
@@ -89,20 +86,24 @@ char	*get_next_line(int fd)
 	char		*newstr;
 	char		*raw;
 	static char	*save = NULL;
-	
+
 	raw = more_info(save, fd);
 	if (!raw)
-		return (NULL);
-	if (raw)
+	{
 		free (save);
-	if (raw[0] == 0)
+		save = NULL;
+		return (NULL);
+	}
+	if (raw)
+	{
+		free (save);
+		save = NULL;
+	}
+	if (raw[0] == '\0')
 		return (free(raw), NULL);
 	newstr = cut_line(raw);
 	if (!newstr)
-	{
-		free (raw);
-		return (NULL);
-	}
+		return (free(raw), NULL);
 	if (raw)
 		save = update_save(raw);
 	free (raw);
