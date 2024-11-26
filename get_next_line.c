@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:02:33 by sjuan-ma          #+#    #+#             */
-/*   Updated: 2024/08/15 17:11:00 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/26 10:53:46 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,18 +87,13 @@ char	*get_next_line(int fd)
 	char		*raw;
 	static char	*save = NULL;
 
-	raw = more_info(save, fd);
-	if (!raw)
-	{
-		free (save);
-		save = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	}
-	if (raw)
-	{
-		free (save);
-		save = NULL;
-	}
+	raw = more_info(save, fd);
+	free (save);
+	save = NULL;
+	if (!raw)
+		return (NULL);
 	if (raw[0] == '\0')
 		return (free(raw), NULL);
 	newstr = cut_line(raw);
